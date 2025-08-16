@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crunchy-postgres-operator
+  name: postgres
   namespace: openshift-gitops
 spec:
   project: default
   source:
     repoURL: https://github.com/computate-org/computate-gitops.git
     targetRevision: HEAD
-    path: openshift-local/crunchy-postgres-operator/base/
+    path: openshift-local/postgres/base/
   destination:
-    namespace: crunchy-postgres-operator
+    namespace: postgres
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:

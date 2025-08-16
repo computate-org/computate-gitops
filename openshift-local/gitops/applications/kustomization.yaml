@@ -5,3 +5,4 @@ resources:
   - ../../zookeeper/applications/
   - ../../solr/applications/
   - ../../crunchy-postgres-operator/applications/
+  - ../../postgres/applications/
