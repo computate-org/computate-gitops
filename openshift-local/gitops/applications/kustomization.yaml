@@ -6,3 +6,4 @@ resources:
   - ../../solr/applications/
   - ../../crunchy-postgres-operator/applications/
   - ../../postgres/applications/
+  - ../../vault/applications/
