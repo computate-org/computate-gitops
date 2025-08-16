@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+  name: zookeeper
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: zookeeper
+    targetRevision: 13.8.7
+    helm:
+      parameters:
+        - name: image.tag
+          value: 3.9.2
+        - name: persistence.size
+          value: 10Gi
+        - name: replicaCount
+          value: "1"
+  destination:
+    namespace: zookeeper
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    automated:
+      # resources that no longer exist get deleted on sync
+      prune: true
+      # sync will be attempted again on failure after self heal timeout (5 seconds by default)
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+  name: solr
+  namespace: openshift-gitops
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: solr
+    targetRevision: 9.6.10
+    helm:
+      parameters:
+        - name: image.tag
+          value: 9.7.0
+        - name: ingress.enabled
+          value: "true"
+        - name: ingress.hostname
+          value: solr.apps-crc.testing
+        - name: ingress.selfSigned
+          value: "true"
+        - name: ingress.tls
+          value: "true"
+        - name: zookeeper.enabled
+          value: "false"
+        - name: externalZookeeper.servers
+          value: "{zookeeper.zookeeper.svc:2181}"
+        - name: persistence.size
+          value: 50Gi
+        - name: collectionShards
+          value: "1"
+        - name: collectionReplicas
+          value: "1"
+        - name: replicaCount
+          value: "1"
+  destination:
+    namespace: solr
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    automated:
+      # resources that no longer exist get deleted on sync
+      prune: true
+      # sync will be attempted again on failure after self heal timeout (5 seconds by default)
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
