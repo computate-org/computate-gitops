@@ -8,4 +8,3 @@ resources:
   - operatorconfigs/
   - secrets/
   - configmaps/
-  - jobs/
