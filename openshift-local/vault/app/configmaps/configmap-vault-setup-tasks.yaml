@@ -33,8 +33,6 @@ data:
       k8s:
         state: present
         name: "vault-init"
-        host: "{{ OPENSHIFT_HOST }}"
-        api_key: "{{ OPENSHIFT_TOKEN }}"
         namespace: "{{ VAULT_NAMESPACE }}"
         definition: "{{ lookup('template', 'vault-init-secret.yaml') }}"
         validate_certs: false
