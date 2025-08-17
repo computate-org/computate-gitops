@@ -18,3 +18,9 @@ spec:
       prune: true
       # sync will be attempted again on failure after self heal timeout (5 seconds by default)
       selfHeal: true
+    retry:
+      limit: 50
+      backoff:
+        duration: 30s # Initial duration
+        factor: 2 # Factor to multiply duration by on each retry
+        maxDuration: 5m # Maximum duration between retries
