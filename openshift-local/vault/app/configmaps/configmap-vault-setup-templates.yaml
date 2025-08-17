@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-setup-templates
+  namespace: vault
+data:
+  external-secrets-policy.hcl: |
+    path "/external-secrets/data/*" {
+      capabilities = ["read"]
+    }
+  kv-engine-admin-policy.hcl: |
+    # query existing mounts
+    path "/sys/mounts" {
+      capabilities = [ "list", "read"]
+      allowed_parameters = {
+        "type" = ["database"]
+        "*"   = []
+      }
+    }
+    # mount database kv engines
+    path "/sys/mounts/\{\{identity.entity.aliases.{{ VAULT_SYS_AUTH.data['kubernetes/'].accessor }}.metadata.service_account_namespace\}\}/kv" {
+      capabilities = [ "create", "read", "update", "delete", "list" ]
+      allowed_parameters = {
+        "type" = ["kv"]
+        "*"   = []
+      }
+    }
+    # tune database secrets engines
+    path "/sys/mounts/\{\{identity.entity.aliases.{{ VAULT_SYS_AUTH.data['kubernetes/'].accessor }}.metadata.service_account_namespace\}\}/kv/tune" {
+      capabilities = [ "create", "read", "update", "delete"]
+    }
+  secret-reader-policy.hcl: |
+    # read secrets
+    path "/\{\{identity.entity.aliases.{{ VAULT_SYS_AUTH.data['kubernetes/'].accessor }}.metadata.service_account_namespace\}\}/kv/*" {
+      capabilities = [ "read" ]
+    }
+  secret-writer-policy.hcl: |
+    # create secrets
+    path "/\{\{identity.entity.aliases.{{ VAULT_SYS_AUTH.data['kubernetes/'].accessor }}.metadata.service_account_namespace\}\}/kv/*" {
+      capabilities = [ "read", "create", "update", "delete" ]
+    }
+    # generate new password from password policy
+    path "/sys/policies/password/+/generate" {
+      capabilities = [ "read" ]
+    }
+  vault-admin-policy.hcl: |
+    path "/*" {
+      capabilities = ["create", "read", "update", "delete", "list","sudo"]
+    }
+  vault-init-secret.yaml: |
+    apiVersion: v1
+    stringData:
+      VAULT_UNSEAL_KEY: "{{ VAULT_UNSEAL_KEY }}"
+      VAULT_ROOT_TOKEN: "{{ VAULT_ROOT_TOKEN }}"
+    kind: Secret
+    type: Opaque

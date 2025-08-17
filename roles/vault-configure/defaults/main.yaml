@@ -9,4 +9,4 @@ VAULT_LABEL: statefulset.kubernetes.io/pod-name=vault-0
 VAULT_NAMESPACE: vault
 
 VAULT_COMMAND_OC: >-
-  oc login {{ OPENSHIFT_HOST }} --username="{{ OPENSHIFT_USERNAME }}" --password="{{ OPENSHIFT_PASSWORD }}" && oc exec $(oc get pod -l {{ VAULT_LABEL }} -o jsonpath='{.items[0].metadata.name}' -n {{ VAULT_NAMESPACE }}) -n {{ VAULT_NAMESPACE }} --
+  oc login {{ OPENSHIFT_HOST }} --username="{{ OPENSHIFT_USERNAME }}" --password="{{ OPENSHIFT_PASSWORD }}" && oc exec $(oc get pod -l {{ VAULT_LABEL }} -o jsonpath='{.items[0].metadata.name}' -n {{ VAULT_NAMESPACE }}) --

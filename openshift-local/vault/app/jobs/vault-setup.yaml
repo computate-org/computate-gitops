@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vault-setup
+  namespace: vault
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: vault-setup
+      volumes:
+        - name: vault-setup-defaults
+          configMap:
+            name: vault-setup-defaults
+        - name: vault-setup-playbook
+          configMap:
+            name: vault-setup-playbook
+        - name: vault-setup-tasks
+          configMap:
+            name: vault-setup-tasks
+        - name: vault-setup-templates
+          configMap:
+            name: vault-setup-templates
+        - name: home
+          emptyDir: {}
+        - name: ansible-tmp
+          emptyDir: {}
+      containers:
+        - name: vault-setup
+          image: quay.io/nerc-images/keycloak-ansible:latest
+          volumeMounts:
+            - name: vault-setup-playbook
+              mountPath: /home/ansible/.ansible/
+            - name: vault-setup-defaults
+              mountPath: /home/ansible/.ansible/roles/vault-setup/defaults/
+            - name: vault-setup-tasks
+              mountPath: /home/ansible/.ansible/roles/vault-setup/tasks/
+            - name: vault-setup-templates
+              mountPath: /home/ansible/.ansible/roles/vault-setup/templates/
+            - name: home
+              mountPath: /home/ansible
+            - name: ansible-tmp
+              mountPath: /home/ansible/.ansible/tmp/
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command: ["/bin/bash", "-c", "--"]
+          args:
+            - |
+                ansible-playbook /home/ansible/.ansible/vault-setup.yaml

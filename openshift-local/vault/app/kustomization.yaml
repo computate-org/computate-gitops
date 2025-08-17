@@ -6,3 +6,6 @@ resources:
   - policies/
   - kubernetesauthengineroles/
   - operatorconfigs/
+  - secrets/
+  - configmaps/
+  - jobs/
