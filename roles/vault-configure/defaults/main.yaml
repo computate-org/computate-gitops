@@ -1,0 +1,12 @@
+OPENSHIFT_HOST: https://api.crc.testing:6443
+OPENSHIFT_USERNAME: "kubeadmin"
+OPENSHIFT_PASSWORD: "{{ lookup('env', 'OPENSHIFT_PASSWORD') | default(omit) }}"
+VAULT_UNSEAL_KEY: "{{ lookup('env', 'VAULT_UNSEAL_KEY') | default(omit) }}"
+VAULT_ROOT_TOKEN: "{{ lookup('env', 'VAULT_ROOT_TOKEN') | default(omit) }}"
+VAULT_ADDR: https://vault.apps-crc.testing
+
+VAULT_LABEL: statefulset.kubernetes.io/pod-name=vault-0
+VAULT_NAMESPACE: vault
+
+VAULT_COMMAND_OC: >-
+  oc login {{ OPENSHIFT_HOST }} --username="{{ OPENSHIFT_USERNAME }}" --password="{{ OPENSHIFT_PASSWORD }}" && oc exec $(oc get pod -l {{ VAULT_LABEL }} -o jsonpath='{.items[0].metadata.name}' -n {{ VAULT_NAMESPACE }}) -n {{ VAULT_NAMESPACE }} --

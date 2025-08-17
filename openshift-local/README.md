@@ -31,3 +31,9 @@ Install the Computate Applications in GitOps.
 oc apply -k openshift-local/gitops/applications/
 ```
 
+Initialize the vault, you will need the OpenShift Local kubeadmin password for this. 
+
+```bash
+ansible-playbook playbooks/vault-configure.yaml -e OPENSHIFT_PASSWORD=...
+```
+
