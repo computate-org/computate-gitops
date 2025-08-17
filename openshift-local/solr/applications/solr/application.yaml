@@ -15,6 +15,10 @@ spec:
       parameters:
         - name: image.tag
           value: 9.7.0
+        - name: auth.existingSecret
+          value: solr-admin
+        - name: auth.existingSecretPasswordKey
+          value: password
         - name: ingress.enabled
           value: "true"
         - name: ingress.hostname

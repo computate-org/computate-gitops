@@ -159,12 +159,3 @@
       ignore_errors: true
     - debug:
         var: vault_write_secret_reader_policy
-
-- block:
-    - name: Setup openshift-config namespace for external secrets
-      shell: >-
-        oc login {{ OPENSHIFT_HOST }} --token={{ OPENSHIFT_TOKEN }} && oc label namespace/openshift-config database-engine-admin='true'
-      register: openshift_config_namespace_for_external_secrets
-      ignore_errors: true
-    - debug:
-        var: openshift_config_namespace_for_external_secrets
