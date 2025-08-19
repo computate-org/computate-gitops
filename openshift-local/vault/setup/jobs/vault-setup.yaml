@@ -4,10 +4,10 @@ metadata:
   name: vault-setup
   namespace: vault
 spec:
-  backoffLimit: 0
+  backoffLimit: 1000
   template:
     spec:
-      restartPolicy: Never
+      restartPolicy: OnFailure
       serviceAccountName: vault-setup
       volumes:
         - name: vault-setup-defaults
