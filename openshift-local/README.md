@@ -24,16 +24,3 @@ Wait for the GitOps app to start.
 ```bash
 oc -n openshift-gitops wait pod -l app.kubernetes.io/name=openshift-gitops-server --for=condition=Ready --timeout=5m
 ```
-
-Install the Computate Applications in GitOps. 
-
-```bash
-oc apply -k openshift-local/gitops/applications/
-```
-
-Initialize the vault, you will need the OpenShift Local kubeadmin password for this. 
-
-```bash
-ansible-playbook playbooks/vault-configure.yaml -e OPENSHIFT_PASSWORD=...
-```
-
