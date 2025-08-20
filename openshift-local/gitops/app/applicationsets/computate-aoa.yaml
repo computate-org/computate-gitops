@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: computate-aoa
+spec:
+  generators:
+    - clusters: {}
+  template:
+    metadata:
+      name: "{{ name }}-aoa"
+    spec:
+      project: default
+      destination:
+        namespace: openshift-gitops
+        name: in-cluster
+      source:
+        path: "openshift-local/clusters/{{ name }}"
+        repoURL: https://github.com/computate-org/computate-gitops.git
+        targetRevision: HEAD

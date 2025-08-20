@@ -4,3 +4,4 @@ resources:
   - clusterroles/
   - clusterrolebindings/
   - argocds/
+  - applicationsets/
