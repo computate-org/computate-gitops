@@ -4,6 +4,7 @@ metadata:
   name: solr-secrets
   namespace: openshift-gitops
   annotations:
+    argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/sync-wave: "3"
 spec:
   project: default

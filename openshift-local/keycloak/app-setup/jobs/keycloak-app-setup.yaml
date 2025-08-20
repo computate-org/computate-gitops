@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: keycloak-app-setup
+  namespace: keycloak
+spec:
+  backoffLimit: 1000
+  template:
+    spec:
+      restartPolicy: OnFailure
+      serviceAccountName: keycloak-app-setup
+      volumes:
+        - name: keycloak-app-setup-playbook
+          configMap:
+            name: keycloak-app-setup-playbook
+        - name: keycloak-app-setup-tasks
+          configMap:
+            name: keycloak-app-setup-tasks
+        - name: home
+          emptyDir: {}
+        - name: ansible-tmp
+          emptyDir: {}
+      containers:
+        - name: keycloak-app-setup
+          image: quay.io/nerc-images/keycloak-ansible:latest
+          volumeMounts:
+            - name: keycloak-app-setup-playbook
+              mountPath: /home/ansible/.ansible/
+            - name: keycloak-app-setup-tasks
+              mountPath: /home/ansible/.ansible/roles/keycloak-app-setup/tasks/
+            - name: home
+              mountPath: /home/ansible
+            - name: ansible-tmp
+              mountPath: /home/ansible/.ansible/tmp/
+          env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          command: ["/bin/bash", "-c", "--"]
+          args:
+            - |
+                ansible-playbook /home/ansible/.ansible/keycloak-app-setup.yaml

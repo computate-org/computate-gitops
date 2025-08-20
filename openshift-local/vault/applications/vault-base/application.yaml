@@ -4,6 +4,7 @@ metadata:
   name: vault-base
   namespace: openshift-gitops
   annotations:
+    argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/hook: PreSync
 spec:
   project: default

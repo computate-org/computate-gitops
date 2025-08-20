@@ -4,6 +4,7 @@ metadata:
   name: solr-setup
   namespace: openshift-gitops
   annotations:
+    argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/sync-wave: "4"
 spec:
   project: default

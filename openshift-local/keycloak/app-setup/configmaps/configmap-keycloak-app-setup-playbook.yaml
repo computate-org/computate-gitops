@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-app-setup-playbook
+  namespace: keycloak
+data:
+  keycloak-app-setup.yaml: |
+    ---
+    - name: keycloak-app-setup
+      hosts: localhost
+      connection: local
+      gather_facts: false
+      roles:
+        - keycloak-app-setup

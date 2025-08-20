@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres
+  name: keycloak-secrets
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "2"
 spec:
   project: default
   source:
     repoURL: https://github.com/computate-org/computate-gitops.git
     targetRevision: HEAD
-    path: openshift-local/postgres/base/
+    path: openshift-local/keycloak/secrets/
   destination:
-    namespace: postgres
+    namespace: keycloak
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:

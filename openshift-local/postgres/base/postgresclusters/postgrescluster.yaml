@@ -40,14 +40,10 @@ spec:
   postgresVersion: 15
   openshift: true
   postGISVersion: 3.3.0
-  users:
-    - name: keycloak
-      options: "SUPERUSER"
-      databases:
-        - keycloak
   patroni:
     dynamicConfiguration:
       postgresql:
         pg_hba:
-          - "host all all all md5"
+          - "host all all 0.0.0.0/0 md5"
+          - "host all all ::/0 md5"
           - "local all all trust"

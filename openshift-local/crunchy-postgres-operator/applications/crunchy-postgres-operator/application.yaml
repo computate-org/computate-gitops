@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: crunchy-postgres-operator
   namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
