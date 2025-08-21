@@ -8,3 +8,4 @@ resources:
   - ../../crunchy-postgres-operator/applications/
   - ../../postgres/applications/
   - ../../keycloak/applications/
+  - ../../scorpiobroker/applications/

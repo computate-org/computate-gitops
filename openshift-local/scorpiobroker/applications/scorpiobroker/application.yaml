@@ -1,19 +1,19 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keycloak-app-setup
+  name: scorpiobroker
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "4"
 spec:
   project: default
   source:
     repoURL: https://github.com/computate-org/computate-gitops.git
     targetRevision: HEAD
-    path: openshift-local/keycloak/app-setup/
+    path: openshift-local/scorpiobroker/base/
   destination:
-    namespace: keycloak
+    namespace: scorpiobroker
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
@@ -27,3 +27,8 @@ spec:
         duration: 30s # Initial duration
         factor: 2 # Factor to multiply duration by on each retry
         maxDuration: 5m # Maximum duration between retries
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        database-engine-admin: 'true'

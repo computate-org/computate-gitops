@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: keycloak
+  namespace: scorpiobroker
   name: database-setup-exec
 rules:
 - apiGroups: [""]
@@ -18,12 +18,12 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  namespace: keycloak
+  namespace: scorpiobroker
   name: database-setup-exec
 subjects:
 - kind: ServiceAccount
   name: database-setup
-  namespace: keycloak
+  namespace: scorpiobroker
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -33,7 +33,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   namespace: postgres
-  name: keycloak-database-setup-exec
+  name: scorpiobroker-database-setup-exec
 rules:
 - apiGroups: [""]
   resources: ["pods/exec"]
@@ -46,12 +46,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   namespace: postgres
-  name: keycloak-database-setup-exec
+  name: scorpiobroker-database-setup-exec
 subjects:
 - kind: ServiceAccount
   name: database-setup
-  namespace: keycloak
+  namespace: scorpiobroker
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: keycloak-database-setup-exec
+  name: scorpiobroker-database-setup-exec
