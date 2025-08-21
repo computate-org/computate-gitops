@@ -22,7 +22,7 @@ data:
         namespace: postgres
         pod: "{{ POSTGRES_POD_NAME }}"
         command: >-
-          env psql -U postgres postgres -c 
+          env psql -U keycloak keycloak -c 
           "
           alter table resource_server_policy alter column id type character varying(255);
           alter table policy_config alter column policy_id type character varying(255);
