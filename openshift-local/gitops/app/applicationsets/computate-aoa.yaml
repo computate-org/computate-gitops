@@ -17,3 +17,7 @@ spec:
         path: "openshift-local/clusters/{{ name }}"
         repoURL: https://github.com/computate-org/computate-gitops.git
         targetRevision: HEAD
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
