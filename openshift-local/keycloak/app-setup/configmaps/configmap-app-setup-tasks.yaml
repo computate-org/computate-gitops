@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: keycloak-app-setup-tasks
+  name: app-setup-tasks
   namespace: keycloak
 data:
   main.yaml: |

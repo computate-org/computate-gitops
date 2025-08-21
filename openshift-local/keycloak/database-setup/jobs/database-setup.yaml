@@ -1,33 +1,33 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: keycloak-app-setup
+  name: database-setup
   namespace: keycloak
 spec:
   backoffLimit: 1000
   template:
     spec:
       restartPolicy: OnFailure
-      serviceAccountName: keycloak-app-setup
+      serviceAccountName: database-setup
       volumes:
-        - name: keycloak-app-setup-playbook
+        - name: database-setup-playbook
           configMap:
-            name: keycloak-app-setup-playbook
-        - name: keycloak-app-setup-tasks
+            name: database-setup-playbook
+        - name: database-setup-tasks
           configMap:
-            name: keycloak-app-setup-tasks
+            name: database-setup-tasks
         - name: home
           emptyDir: {}
         - name: ansible-tmp
           emptyDir: {}
       containers:
-        - name: keycloak-app-setup
+        - name: database-setup
           image: quay.io/nerc-images/keycloak-ansible:latest
           volumeMounts:
-            - name: keycloak-app-setup-playbook
+            - name: database-setup-playbook
               mountPath: /home/ansible/.ansible/
-            - name: keycloak-app-setup-tasks
-              mountPath: /home/ansible/.ansible/roles/keycloak-app-setup/tasks/
+            - name: database-setup-tasks
+              mountPath: /home/ansible/.ansible/roles/database-setup/tasks/
             - name: home
               mountPath: /home/ansible
             - name: ansible-tmp
@@ -40,4 +40,4 @@ spec:
           command: ["/bin/bash", "-c", "--"]
           args:
             - |
-                ansible-playbook /home/ansible/.ansible/keycloak-app-setup.yaml
+                ansible-playbook /home/ansible/.ansible/database-setup.yaml

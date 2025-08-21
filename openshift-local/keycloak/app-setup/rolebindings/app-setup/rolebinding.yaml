@@ -3,7 +3,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   namespace: keycloak
-  name: keycloak-app-setup-exec
+  name: app-setup-exec
 rules:
 - apiGroups: [""]
   resources: ["pods/exec"]
@@ -19,21 +19,21 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   namespace: keycloak
-  name: keycloak-app-setup-exec
+  name: app-setup-exec
 subjects:
 - kind: ServiceAccount
-  name: keycloak-app-setup
+  name: app-setup
   namespace: keycloak
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: keycloak-app-setup-exec
+  name: app-setup-exec
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   namespace: postgres
-  name: keycloak-app-setup-exec
+  name: app-setup-exec
 rules:
 - apiGroups: [""]
   resources: ["pods/exec"]
@@ -46,12 +46,12 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   namespace: postgres
-  name: keycloak-app-setup-exec
+  name: app-setup-exec
 subjects:
 - kind: ServiceAccount
-  name: keycloak-app-setup
+  name: app-setup
   namespace: keycloak
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
-  name: keycloak-app-setup-exec
+  name: app-setup-exec

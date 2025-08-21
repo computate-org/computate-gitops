@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keycloak-app-setup
+  name: database-setup
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    argocd.argoproj.io/sync-wave: "5"
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   project: default
   source:
     repoURL: https://github.com/computate-org/computate-gitops.git
     targetRevision: HEAD
-    path: openshift-local/keycloak/app-setup/
+    path: openshift-local/keycloak/database-setup/
   destination:
     namespace: keycloak
     server: 'https://kubernetes.default.svc'

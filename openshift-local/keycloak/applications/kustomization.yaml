@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   - keycloak/
   - keycloak-secrets/
-  - keycloak-database-setup/
-  - keycloak-app-setup/
+  - database-setup/
+  - app-setup/
