@@ -24,6 +24,8 @@ data:
         command: >-
           env psql -U keycloak keycloak -c 
           "
+          alter table protocol_mapper alter column id type character varying(255);
+          alter table protocol_mapper_config alter column protocol_mapper_id type character varying(255);
           alter table resource_server_policy alter column id type character varying(255);
           alter table policy_config alter column policy_id type character varying(255);
           alter table associated_policy alter column policy_id type character varying(255);
