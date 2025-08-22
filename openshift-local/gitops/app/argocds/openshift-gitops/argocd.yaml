@@ -110,6 +110,9 @@ spec:
         memory: 128Mi
   controller:
     processors: {}
+    env:
+      - name: ARGOCD_SYNC_WAVE_DELAY
+        value: '2m'
     resources:
       limits:
         cpu: '2'
