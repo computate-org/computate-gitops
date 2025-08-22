@@ -5,7 +5,8 @@ metadata:
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-3"
 spec:
   project: default
   source:
