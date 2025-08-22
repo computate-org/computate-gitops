@@ -9,4 +9,4 @@ resources:
   - ../../postgres/applications/
   - ../../keycloak/applications/
   - ../../scorpiobroker/applications/
-  - ../../openshift-ai/applications/
+#  - ../../openshift-ai/applications/
