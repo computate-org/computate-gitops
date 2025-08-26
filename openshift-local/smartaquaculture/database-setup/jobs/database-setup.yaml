@@ -13,6 +13,12 @@ spec:
         - name: database-setup-playbook
           configMap:
             name: database-setup-playbook
+        - name: database-setup-defaults
+          configMap:
+            name: database-setup-defaults
+        - name: database-setup-templates
+          configMap:
+            name: database-setup-templates
         - name: database-setup-tasks
           configMap:
             name: database-setup-tasks
@@ -23,16 +29,23 @@ spec:
       containers:
         - name: database-setup
           image: quay.io/nerc-images/keycloak-ansible:latest
+          imagePullPolicy: Always
           volumeMounts:
             - name: database-setup-playbook
-              mountPath: /home/ansible/.ansible/
+              mountPath: /home/ansible/.ansible/playbooks/
             - name: database-setup-tasks
               mountPath: /home/ansible/.ansible/roles/database-setup/tasks/
+            - name: database-setup-defaults
+              mountPath: /home/ansible/.ansible/roles/database-setup/defaults/
+            - name: database-setup-templates
+              mountPath: /home/ansible/.ansible/roles/database-setup/templates/
             - name: home
               mountPath: /home/ansible
             - name: ansible-tmp
               mountPath: /home/ansible/.ansible/tmp/
           env:
+            - name: ANSIBLE_ROLES_PATH
+              value: /home/ansible/.ansible/roles
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -40,4 +53,4 @@ spec:
           command: ["/bin/bash", "-c", "--"]
           args:
             - |
-                ansible-playbook /home/ansible/.ansible/database-setup.yaml
+                ansible-playbook /home/ansible/.ansible/playbooks/database-setup.yaml

@@ -52,8 +52,6 @@ spec:
         - secretRef:
             name: smartaquaculture-auth
         - secretRef:
-            name: smartaquaculture-rabbitmq
-        - secretRef:
             name: smartaquaculture-context-broker
         - secretRef:
             name: smartaquaculture-site

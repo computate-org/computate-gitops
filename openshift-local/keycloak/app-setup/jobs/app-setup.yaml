@@ -23,9 +23,10 @@ spec:
       containers:
         - name: app-setup
           image: quay.io/nerc-images/keycloak-ansible:latest
+          imagePullPolicy: Always
           volumeMounts:
             - name: app-setup-playbook
-              mountPath: /home/ansible/.ansible/
+              mountPath: /home/ansible/.ansible/playbooks/
             - name: app-setup-tasks
               mountPath: /home/ansible/.ansible/roles/app-setup/tasks/
             - name: home
@@ -33,6 +34,8 @@ spec:
             - name: ansible-tmp
               mountPath: /home/ansible/.ansible/tmp/
           env:
+            - name: ANSIBLE_ROLES_PATH
+              value: /home/ansible/.ansible/roles
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
@@ -40,4 +43,4 @@ spec:
           command: ["/bin/bash", "-c", "--"]
           args:
             - |
-                ansible-playbook /home/ansible/.ansible/app-setup.yaml
+                ansible-playbook /home/ansible/.ansible/playbooks/app-setup.yaml
