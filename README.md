@@ -3,8 +3,8 @@ Install the GitOps Operator resources in OpenShift.
 
 ```bash
 mkdir -p ~/.local/src/computate-gitops/
-git clone https://github.com/computate-org/computate-gitops.git
 cd ~/.local/src/computate-gitops
+git clone https://github.com/computate-org/computate-gitops.git ~/.local/src/computate-gitops
 oc apply -k openshift-local/gitops/base/
 ```
 
