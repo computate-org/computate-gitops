@@ -17,6 +17,10 @@ spec:
       parameters:
         - name: image.tag
           value: 3.9.2
+        - name: image.repository
+          value: bitnamilegacy/zookeeper
+        - name: global.security.allowInsecureImages
+          value: 'true'
         - name: persistence.size
           value: 10Gi
         - name: replicaCount

@@ -16,6 +16,10 @@ spec:
       parameters:
         - name: image.tag
           value: 26.1.1
+        - name: image.repository
+          value: bitnamilegacy/keycloak
+        - name: global.security.allowInsecureImages
+          value: 'true'
         - name: postgresql.enabled
           value: "false"
         - name: externalDatabase.host
