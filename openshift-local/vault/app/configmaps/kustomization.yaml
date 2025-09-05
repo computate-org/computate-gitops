@@ -5,3 +5,4 @@ resources:
 - configmap-vault-setup-playbook.yaml
 - configmap-vault-setup-tasks.yaml
 - configmap-vault-setup-templates.yaml
+- configmap-vault-unseal-tasks.yaml
