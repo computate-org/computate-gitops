@@ -1,57 +1,61 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: vault-setup
+  name: unseal-vault
   namespace: vault
 spec:
+  schedule: "*/2 * * * *"
   backoffLimit: 1000
-  template:
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 1
+  jobTemplate:
     spec:
-      schedule: "*/5 * * * *"
-      restartPolicy: OnFailure
-      serviceAccountName: vault-setup
-      volumes:
-        - name: vault-setup-defaults
-          configMap:
-            name: vault-setup-defaults
-        - name: vault-setup-playbook
-          configMap:
-            name: vault-setup-playbook
-        - name: vault-setup-tasks
-          configMap:
-            name: vault-unseal-tasks
-        - name: vault-setup-templates
-          configMap:
-            name: vault-setup-templates
-        - name: home
-          emptyDir: {}
-        - name: ansible-tmp
-          emptyDir: {}
-      containers:
-        - name: vault-setup
-          image: quay.io/nerc-images/keycloak-ansible:latest
-          imagePullPolicy: Always
-          volumeMounts:
-            - name: vault-setup-playbook
-              mountPath: /home/ansible/.ansible/playbooks/
+      template:
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: vault-setup
+          volumes:
             - name: vault-setup-defaults
-              mountPath: /home/ansible/.ansible/roles/vault-setup/defaults/
+              configMap:
+                name: vault-setup-defaults
+            - name: vault-setup-playbook
+              configMap:
+                name: vault-setup-playbook
             - name: vault-setup-tasks
-              mountPath: /home/ansible/.ansible/roles/vault-setup/tasks/
+              configMap:
+                name: vault-unseal-tasks
             - name: vault-setup-templates
-              mountPath: /home/ansible/.ansible/roles/vault-setup/templates/
+              configMap:
+                name: vault-setup-templates
             - name: home
-              mountPath: /home/ansible
+              emptyDir: {}
             - name: ansible-tmp
-              mountPath: /home/ansible/.ansible/tmp/
-          env:
-            - name: ANSIBLE_ROLES_PATH
-              value: /home/ansible/.ansible/roles
-            - name: POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-          command: ["/bin/bash", "-c", "--"]
-          args:
-            - |
-                ansible-playbook /home/ansible/.ansible/playbooks/vault-setup.yaml
+              emptyDir: {}
+          containers:
+            - name: vault-setup
+              image: quay.io/nerc-images/keycloak-ansible:latest
+              imagePullPolicy: Always
+              volumeMounts:
+                - name: vault-setup-playbook
+                  mountPath: /home/ansible/.ansible/playbooks/
+                - name: vault-setup-defaults
+                  mountPath: /home/ansible/.ansible/roles/vault-setup/defaults/
+                - name: vault-setup-tasks
+                  mountPath: /home/ansible/.ansible/roles/vault-setup/tasks/
+                - name: vault-setup-templates
+                  mountPath: /home/ansible/.ansible/roles/vault-setup/templates/
+                - name: home
+                  mountPath: /home/ansible
+                - name: ansible-tmp
+                  mountPath: /home/ansible/.ansible/tmp/
+              env:
+                - name: ANSIBLE_ROLES_PATH
+                  value: /home/ansible/.ansible/roles
+                - name: POD_NAMESPACE
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.namespace
+              command: ["/bin/bash", "-c", "--"]
+              args:
+                - |
+                    ansible-playbook /home/ansible/.ansible/playbooks/vault-setup.yaml

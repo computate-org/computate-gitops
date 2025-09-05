@@ -16,6 +16,10 @@ spec:
       parameters:
         - name: image.tag
           value: 9.7.0
+        - name: image.repository
+          value: bitnamilegacy/solr
+        - name: global.security.allowInsecureImages
+          value: 'true'
         - name: auth.existingSecret
           value: solr-admin
         - name: auth.existingSecretPasswordKey
