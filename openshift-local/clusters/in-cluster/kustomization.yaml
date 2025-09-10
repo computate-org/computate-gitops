@@ -7,6 +7,7 @@ resources:
   - ../../solr/applications/
   - ../../crunchy-postgres-operator/applications/
   - ../../postgres/applications/
+  - ../../keycloak-operator/applications/
   - ../../keycloak/applications/
   - ../../scorpiobroker/applications/
 #  - ../../openshift-ai/applications/

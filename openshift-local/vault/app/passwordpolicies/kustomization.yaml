@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - simple-password-policy-15/
   - special-characters-password-policy-15/
+  - alpha-8/
