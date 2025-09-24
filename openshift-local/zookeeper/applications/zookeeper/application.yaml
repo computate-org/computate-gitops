@@ -1,29 +1,24 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
+  name: zookeeper
+  namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
     argocd.argoproj.io/hook: PreSync
     argocd.argoproj.io/sync-wave: "-5"
-  name: zookeeper
-  namespace: openshift-gitops
 spec:
   project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
+    repoURL: https://charts.pravega.io
     chart: zookeeper
-    targetRevision: 13.8.7
+    targetRevision: 0.2.15
     helm:
+      releaseName: zookeeper
       parameters:
-        - name: image.tag
-          value: 3.9.2
-        - name: image.repository
-          value: bitnamilegacy/zookeeper
-        - name: global.security.allowInsecureImages
-          value: 'true'
-        - name: persistence.size
-          value: 10Gi
-        - name: replicaCount
+        - name: persistence.volumeSize
+          value: 50Gi
+        - name: replicas
           value: "1"
   destination:
     namespace: zookeeper
@@ -34,5 +29,3 @@ spec:
       prune: true
       # sync will be attempted again on failure after self heal timeout (5 seconds by default)
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true

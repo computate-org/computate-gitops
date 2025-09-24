@@ -14,7 +14,7 @@ spec:
     targetRevision: HEAD
     path: config/crd/bases/
   destination:
-    namespace: zookeeper-operator
+    namespace: zookeeper
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
