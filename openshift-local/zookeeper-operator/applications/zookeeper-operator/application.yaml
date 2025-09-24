@@ -10,9 +10,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/computate-org/computate-gitops.git
-    targetRevision: HEAD
-    path: openshift-local/zookeeper-operator/base/
+    repoURL: https://charts.pravega.io
+    chart: zookeeper
+    targetRevision: 0.2.15
+    helm:
+      releaseName: zookeeper
+      parameters:
+
   destination:
     namespace: zookeeper-operator
     server: 'https://kubernetes.default.svc'
@@ -22,5 +26,3 @@ spec:
       prune: true
       # sync will be attempted again on failure after self heal timeout (5 seconds by default)
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true

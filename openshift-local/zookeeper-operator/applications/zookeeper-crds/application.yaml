@@ -1,19 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: scorpiobroker
+  name: zookeeper-crds
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   project: default
   source:
-    repoURL: https://github.com/computate-org/computate-gitops.git
+    repoURL: https://github.com/pravega/zookeeper-operator.git
     targetRevision: HEAD
-    path: openshift-local/scorpiobroker/base/
+    path: config/crd/bases/
   destination:
-    namespace: scorpiobroker
+    namespace: zookeeper-operator
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
@@ -21,9 +22,5 @@ spec:
       prune: true
       # sync will be attempted again on failure after self heal timeout (5 seconds by default)
       selfHeal: true
-    retry:
-      limit: 50
-      backoff:
-        duration: 30s # Initial duration
-        factor: 2 # Factor to multiply duration by on each retry
-        maxDuration: 5m # Maximum duration between retries
+    syncOptions:
+      - CreateNamespace=true

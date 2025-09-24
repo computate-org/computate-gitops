@@ -61,8 +61,3 @@ spec:
       prune: true
       # sync will be attempted again on failure after self heal timeout (5 seconds by default)
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-    managedNamespaceMetadata:
-      labels:
-        database-engine-admin: 'true'
