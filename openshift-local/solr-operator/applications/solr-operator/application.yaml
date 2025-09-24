@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: zookeeper
+  name: solr-operator
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
@@ -10,18 +10,21 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.pravega.io
-    chart: zookeeper
-    targetRevision: 0.2.15
+    repoURL: https://github.com/computate/solr-operator.git
+    targetRevision: openshift
+    path: helm/solr-operator
     helm:
-      releaseName: zookeeper
       parameters:
-        - name: persistence.volumeSize
-          value: 10Gi
-        - name: replicas
-          value: "1"
+        - name: zookeeper-operator.install
+          value: 'false'
+        - name: zookeeper-operator.use
+          value: 'false'
+        - name: image.repository
+          value: 'quay.io/computate/solr-operator'
+        - name: image.tag
+          value: 'openshift'
   destination:
-    namespace: zookeeper
+    namespace: solr
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
@@ -29,3 +32,8 @@ spec:
       prune: true
       # sync will be attempted again on failure after self heal timeout (5 seconds by default)
       selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        database-engine-admin: 'true'

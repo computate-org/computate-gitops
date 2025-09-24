@@ -5,45 +5,14 @@ metadata:
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-5"
 spec:
   project: default
   source:
-    repoURL: https://charts.bitnami.com/bitnami
-    chart: solr
-    targetRevision: 9.6.10
-    helm:
-      parameters:
-        - name: image.tag
-          value: 9.7.0
-        - name: image.repository
-          value: bitnamilegacy/solr
-        - name: global.security.allowInsecureImages
-          value: 'true'
-        - name: auth.existingSecret
-          value: solr-admin
-        - name: auth.existingSecretPasswordKey
-          value: password
-        - name: ingress.enabled
-          value: "true"
-        - name: ingress.hostname
-          value: solr.apps-crc.testing
-        - name: ingress.selfSigned
-          value: "true"
-        - name: ingress.tls
-          value: "true"
-        - name: zookeeper.enabled
-          value: "false"
-        - name: externalZookeeper.servers
-          value: "{zookeeper.zookeeper.svc:2181}"
-        - name: persistence.size
-          value: 50Gi
-        - name: collectionShards
-          value: "1"
-        - name: collectionReplicas
-          value: "1"
-        - name: replicaCount
-          value: "1"
+    repoURL: https://github.com/computate-org/computate-gitops.git
+    targetRevision: HEAD
+    path: openshift-local/solr/solr/
   destination:
     namespace: solr
     server: 'https://kubernetes.default.svc'
@@ -53,8 +22,3 @@ spec:
       prune: true
       # sync will be attempted again on failure after self heal timeout (5 seconds by default)
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-    managedNamespaceMetadata:
-      labels:
-        database-engine-admin: 'true'

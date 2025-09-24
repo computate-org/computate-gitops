@@ -1,0 +1,48 @@
+apiVersion: solr.apache.org/v1beta1
+kind: SolrCloud
+metadata:
+  name: solr
+spec:
+  solrLogLevel: INFO
+  zookeeperRef:
+    connectionInfo:
+      chroot: /
+      internalConnectionString: 'zookeeper-client.zookeeper.svc:2181'
+  scaling:
+    populatePodsOnScaleUp: true
+    vacatePodsOnScaleDown: true
+  busyBoxImage:
+    repository: library/busybox
+    tag: 1.28.0-glibc
+  solrJavaMem: '-Xms1g -Xmx2g'
+  dataStorage:
+    persistent:
+      pvcTemplate:
+        metadata: {}
+        spec:
+          resources:
+            requests:
+              storage: 50Gi
+      reclaimPolicy: Retain
+  solrAddressability:
+    commonServicePort: 80
+    external:
+      domainName: solr.apps-crc.testing
+      ingressTLSTermination:
+        useDefaultTLSSecret: true
+      method: Ingress
+      nodePortOverride: 80
+      useExternalAddress: false
+    podPort: 8983
+  solrImage:
+    repository: solr
+    tag: 9.7.0
+  availability:
+    podDisruptionBudget:
+      enabled: true
+      method: ClusterWide
+  replicas: 1
+  updateStrategy:
+    managed: {}
+    method: Managed
+  customSolrKubeOptions: {}

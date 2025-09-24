@@ -5,6 +5,7 @@ resources:
   - ../../cert-manager/applications/
   - ../../zookeeper-operator/applications/
   - ../../zookeeper/applications/
+  - ../../solr-operator/applications/
   - ../../solr/applications/
   - ../../crunchy-postgres-operator/applications/
   - ../../postgres/applications/
