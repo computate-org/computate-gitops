@@ -29,7 +29,7 @@ spec:
   solrAddressability:
     commonServicePort: 80
     external:
-      domainName: solr.apps-crc.testing
+      domainName: apps-crc.testing
       ingressTLSTermination:
         useDefaultTLSSecret: true
       method: Ingress

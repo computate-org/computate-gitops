@@ -17,7 +17,7 @@ data:
         curl -k -X POST -u "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['username'] | b64decode }}:{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['password'] | b64decode }}" 
           -H "Content-Type:application/octet-stream" 
           --data-binary @/tmp/computate-configset.zip 
-          "https://solr.apps-crc.testing/solr/admin/configs?action=UPLOAD&name=computate&overwrite=true"
+          "https://solr-solr.apps-crc.testing/solr/admin/configs?action=UPLOAD&name=computate&overwrite=true"
       kubernetes.core.k8s_exec:
         namespace: solr
         pod: solr-solrcloud-0
