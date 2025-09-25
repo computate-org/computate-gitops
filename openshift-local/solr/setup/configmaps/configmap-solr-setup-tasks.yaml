@@ -14,7 +14,7 @@ data:
           curl -k https://raw.githubusercontent.com/computate-org/computate/refs/heads/main/config/solr/computate-configset.zip -o /tmp/computate-configset.zip
     - name: >-
         Upload default computate configset: 
-        curl -k -X POST -u "admin:$(cat /opt/bitnami/solr/secrets/pass/password)" 
+        curl -k -X POST -u "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['username'] | b64decode }}:{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['password'] | b64decode }}" 
           -H "Content-Type:application/octet-stream" 
           --data-binary @/tmp/computate-configset.zip 
           "https://solr.apps-crc.testing/solr/admin/configs?action=UPLOAD&name=computate&overwrite=true"
@@ -23,7 +23,7 @@ data:
         pod: solr-solrcloud-0
         command: >-
           bash -c '
-          curl -k -X POST -u "admin:$(cat /opt/bitnami/solr/secrets/pass/password)" 
+          curl -k -X POST -u "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['username'] | b64decode }}:{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['password'] | b64decode }}" 
           -H "Content-Type:application/octet-stream" 
           --data-binary @/tmp/computate-configset.zip 
           "http://localhost:8983/solr/admin/configs?action=UPLOAD&name=computate&overwrite=true"
@@ -35,7 +35,7 @@ data:
     - name: >-
         Create computate collection: 
         SOLR_AUTH_TYPE=basic 
-        SOLR_AUTHENTICATION_OPTS="-Dbasicauth=admin:$(cat /opt/bitnami/solr/secrets/pass/password)" 
+        SOLR_AUTHENTICATION_OPTS="-Dbasicauth={{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['username'] | b64decode }}:{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['password'] | b64decode }}" 
         /opt/bitnami/solr/bin/solr create_collection --solr-url http://localhost:8983 -c computate -n computate'
       kubernetes.core.k8s_exec:
         namespace: solr
@@ -43,7 +43,7 @@ data:
         command: >-
           bash -c '
           SOLR_AUTH_TYPE=basic
-          SOLR_AUTHENTICATION_OPTS="-Dbasicauth=admin:$(cat /opt/bitnami/solr/secrets/pass/password)" 
+          SOLR_AUTHENTICATION_OPTS="-Dbasicauth={{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['username'] | b64decode }}:{{ query('kubernetes.core.k8s', kind='Secret', resource_name='solr-solrcloud-basic-auth', namespace='solr')[0].data['password'] | b64decode }}" 
           /opt/bitnami/solr/bin/solr create_collection --solr-url http://localhost:8983 -c computate -n computate
           '
       register: create_computate_collection
