@@ -8,6 +8,8 @@ spec:
     connectionInfo:
       chroot: /
       internalConnectionString: 'zookeeper-client.zookeeper.svc:2181'
+  solrSecurity:
+    authenticationType: Basic
   scaling:
     populatePodsOnScaleUp: true
     vacatePodsOnScaleDown: true
