@@ -9,7 +9,7 @@ data:
     - name: "Download computate configset: curl -k https://raw.githubusercontent.com/computate-org/computate/refs/heads/main/config/solr/computate-configset.zip -o /tmp/computate-configset.zip"
       kubernetes.core.k8s_exec:
         namespace: solr
-        pod: solr-0
+        pod: solr-solrcloud-0
         command: >-
           curl -k https://raw.githubusercontent.com/computate-org/computate/refs/heads/main/config/solr/computate-configset.zip -o /tmp/computate-configset.zip
     - name: >-
@@ -20,7 +20,7 @@ data:
           "https://solr.apps-crc.testing/solr/admin/configs?action=UPLOAD&name=computate&overwrite=true"
       kubernetes.core.k8s_exec:
         namespace: solr
-        pod: solr-0
+        pod: solr-solrcloud-0
         command: >-
           bash -c '
           curl -k -X POST -u "admin:$(cat /opt/bitnami/solr/secrets/pass/password)" 
@@ -39,7 +39,7 @@ data:
         /opt/bitnami/solr/bin/solr create_collection --solr-url http://localhost:8983 -c computate -n computate'
       kubernetes.core.k8s_exec:
         namespace: solr
-        pod: solr-0
+        pod: solr-solrcloud-0
         command: >-
           bash -c '
           SOLR_AUTH_TYPE=basic
