@@ -26,17 +26,6 @@ spec:
             requests:
               storage: 50Gi
       reclaimPolicy: Retain
-  solrAddressability:
-    commonServicePort: 80
-    external:
-      domainName: apps-crc.testing
-      hideNodes: true
-      ingressTLSTermination:
-        useDefaultTLSSecret: true
-      method: Ingress
-      nodePortOverride: 80
-      useExternalAddress: false
-    podPort: 8983
   solrImage:
     repository: solr
     tag: 9.7.0
@@ -48,10 +37,3 @@ spec:
   updateStrategy:
     managed: {}
     method: Managed
-  customSolrKubeOptions:
-    ingressOptions:
-      ingressClassName: openshift-default
-      annotations:
-        acme.cert-manager.io/http01-ingress-class: openshift-default
-        cert-manager.io/cluster-issuer: selfsigned-issuer
-        route.openshift.io/termination: passthrough

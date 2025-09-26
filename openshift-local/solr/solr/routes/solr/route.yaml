@@ -1,0 +1,17 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  namespace: solr
+  name: solr
+spec:
+  host: solr.apps-crc.testing
+  to:
+    kind: Service
+    name: solr-solrcloud-common
+    weight: 100
+  port:
+    targetPort: solr-client
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
