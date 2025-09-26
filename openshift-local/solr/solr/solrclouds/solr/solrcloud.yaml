@@ -30,6 +30,7 @@ spec:
     commonServicePort: 80
     external:
       domainName: apps-crc.testing
+      hideNodes: true
       ingressTLSTermination:
         useDefaultTLSSecret: true
       method: Ingress
