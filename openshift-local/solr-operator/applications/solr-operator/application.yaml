@@ -14,6 +14,7 @@ spec:
     targetRevision: openshift
     path: helm/solr-operator
     helm:
+      skipCrds: true
       parameters:
         - name: zookeeper-operator.install
           value: 'false'
