@@ -5,7 +5,6 @@ metadata:
   namespace: vault
 spec:
   schedule: "*/2 * * * *"
-  backoffLimit: 1000
   successfulJobsHistoryLimit: 1
   failedJobsHistoryLimit: 1
   jobTemplate:
