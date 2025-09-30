@@ -54,7 +54,7 @@ spec:
     - group: admissionregistration.k8s.io
       kind: MutatingWebhookConfiguration
       jsonPointers:
-        - /webhooks
+        - /webhooks/0/clientConfig/caBundle
 
   destination:
     namespace: vault
