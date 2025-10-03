@@ -28,7 +28,7 @@ spec:
       reclaimPolicy: Retain
   solrImage:
     repository: solr
-    tag: 9.7.0
+    tag: 9.9.0
   availability:
     podDisruptionBudget:
       enabled: true
