@@ -10,9 +10,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/computate-org/computate-gitops.git
-    targetRevision: HEAD
-    path: openshift-local/zookeeper-operator/base/
+    repoURL: https://charts.pravega.io
+    chart: zookeeper-operator
+    targetRevision: 0.2.14
+    helm:
+      skipCrds: true
+      parameters:
+        - name: crd.create
+          value: 'false'
   destination:
     namespace: zookeeper
     server: 'https://kubernetes.default.svc'
