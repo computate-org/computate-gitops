@@ -1,0 +1,26 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: eda
+  labels:
+    strimzi.io/cluster: kafka
+spec:
+  authentication:
+    type: tls
+  authorization:
+    acls:
+      - resource:
+          name: eda-
+          patternType: prefix
+          type: topic
+        operations:
+          - All
+        type: allow
+      - resource:
+          name: eda-
+          patternType: prefix
+          type: group
+        operations:
+          - All
+        type: allow
+    type: simple
