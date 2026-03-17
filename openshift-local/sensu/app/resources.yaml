@@ -1,0 +1,177 @@
+---
+# Source: sensu-go-deployment/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: sensu-backend-sensu-go-deployment
+  labels:
+    app.kubernetes.io/name: sensu-go-deployment
+    helm.sh/chart: sensu-go-deployment-0.1.0
+    app.kubernetes.io/instance: sensu-backend
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8081
+      targetPort: 8081
+      protocol: TCP
+      name: websocket
+    - port: 8080
+      targetPort: 8080
+      protocol: TCP
+      name: api
+    - port: 3000
+      targetPort: 3000
+      protocol: TCP
+      name: dashboard
+  selector:
+    app.kubernetes.io/name: sensu-go-deployment
+    app.kubernetes.io/instance: sensu-backend
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sensu-backend
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: sensu-cache
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+# Source: sensu-go-deployment/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sensu-backend-sensu-go-deployment
+  labels:
+    app.kubernetes.io/name: sensu-go-deployment
+    helm.sh/chart: sensu-go-deployment-0.1.0
+    app.kubernetes.io/instance: sensu-backend
+    app.kubernetes.io/version: "1.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: sensu-go-deployment
+      app.kubernetes.io/instance: sensu-backend
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: sensu-go-deployment
+        app.kubernetes.io/instance: sensu-backend
+    spec:
+      securityContext: {}
+      volumes:
+        - name: sensu-backend
+          persistentVolumeClaim:
+            claimName: sensu-backend
+        - name: sensu-cache
+          persistentVolumeClaim:
+            claimName: sensu-cache
+      containers:
+        - name: sensu-go-deployment
+          image: "docker.io/sensu/sensu:latest"
+          imagePullPolicy: IfNotPresent
+          securityContext: {}
+            # capabilities:
+            #   drop:
+            #     - MKNOD
+          ports:
+            - name: websocket
+              containerPort: 8081
+              protocol: TCP
+            - name: api
+              containerPort: 8080
+              protocol: TCP
+            - name: dashboard
+              containerPort: 3000
+              protocol: TCP
+          command: [ "sensu-backend" ]
+          args: [ "start" ]
+          volumeMounts:
+            - name: sensu-cache
+              mountPath: /var/cache/sensu/sensu-backend
+            - name: sensu-backend
+              mountPath: /var/lib/sensu/sensu-backend
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+          resources:
+            limits:
+              cpu: 4000m
+              memory: 512Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: sensu-websocket
+spec:
+  host: sensu-websocket.apps-crc.testing
+  to:
+    kind: Service
+    name: sensu-backend-sensu-go-deployment
+    weight: 100
+  port:
+    targetPort: 8081
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: sensu-dashboard
+spec:
+  host: sensu.apps-crc.testing
+  to:
+    kind: Service
+    name: sensu-backend-sensu-go-deployment
+    weight: 100
+  port:
+    targetPort: 3000
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: sensu-api
+spec:
+  host: sensu-api.apps-crc.testing
+  to:
+    kind: Service
+    name: sensu-backend-sensu-go-deployment
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  wildcardPolicy: None
