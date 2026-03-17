@@ -90,6 +90,18 @@ spec:
             # capabilities:
             #   drop:
             #     - MKNOD
+          env:
+            - name: SENSU_BACKEND_CLUSTER_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: sensu-admin
+            - name: SENSU_BACKEND_URL
+              value: ws://sensu-backend-sensu-go-deployment:8081
+            - name: SENSU_API_HOST
+              value: sensu-backend-sensu-go-deployment
+            - name: SENSU_API_PORT
+              value: '8080'
           ports:
             - name: websocket
               containerPort: 8081

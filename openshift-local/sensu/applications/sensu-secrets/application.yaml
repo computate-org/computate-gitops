@@ -1,19 +1,20 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: aap
+  name: sensu-secrets
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
-    argocd.argoproj.io/sync-wave: "0"
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/sync-wave: "-2"
 spec:
   project: default
   source:
     repoURL: https://github.com/computate-org/computate-gitops.git
     targetRevision: HEAD
-    path: openshift-local/aap/app/
+    path: openshift-local/sensu/secrets/
   destination:
-    namespace: aap
+    namespace: sensu
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
@@ -23,3 +24,6 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+    managedNamespaceMetadata:
+      labels:
+        database-engine-admin: 'true'
