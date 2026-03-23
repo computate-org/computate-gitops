@@ -24,10 +24,6 @@ spec:
           value: 'quay.io/computate/solr-operator'
         - name: image.tag
           value: 'openshift'
-        - name: image.repository
-          value: 'docker.io/pravega/zookeeper-operator'
-        - name: hooks.image.repository
-          value: 'docker.io/pravega/zookeeper-operator'
   destination:
     namespace: solr
     server: 'https://kubernetes.default.svc'
