@@ -27,7 +27,7 @@ spec:
               storage: 50Gi
       reclaimPolicy: Retain
   solrImage:
-    repository: solr
+    repository: docker.io/solr
     tag: 9.9.0
   availability:
     podDisruptionBudget:
