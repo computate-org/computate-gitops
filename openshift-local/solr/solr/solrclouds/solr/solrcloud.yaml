@@ -14,7 +14,7 @@ spec:
     populatePodsOnScaleUp: true
     vacatePodsOnScaleDown: true
   busyBoxImage:
-    repository: library/busybox
+    repository: docker.io/library/busybox
     tag: 1.28.0-glibc
   solrJavaMem: '-Xms1g -Xmx2g'
   dataStorage:

@@ -20,6 +20,8 @@ spec:
           value: 10Gi
         - name: replicas
           value: "1"
+        - name: image.repository
+          value: 'docker.io/pravega/zookeeper'
   destination:
     namespace: zookeeper
     server: 'https://kubernetes.default.svc'
