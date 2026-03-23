@@ -18,6 +18,8 @@ spec:
       parameters:
         - name: crd.create
           value: 'false'
+        - name: image.repository
+          value: 'docker.io/pravega/zookeeper-operator'
   destination:
     namespace: zookeeper
     server: 'https://kubernetes.default.svc'
