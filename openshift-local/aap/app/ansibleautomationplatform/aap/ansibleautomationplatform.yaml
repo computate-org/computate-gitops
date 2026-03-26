@@ -10,9 +10,6 @@ spec:
   eda:
     disabled: true
   hub:
-    disabled: false
-    storage_type: file
-    file_storage_storage_class: crc-csi-hostpath-provisioner
-    file_storage_size: 10Gi
+    disabled: true
   lightspeed:
     disabled: true
