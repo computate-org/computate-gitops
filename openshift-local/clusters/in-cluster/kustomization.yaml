@@ -12,5 +12,5 @@ resources:
   - ../../postgres/applications/
   - ../../keycloak-operator/applications/
   - ../../keycloak/applications/
-  - ../../scorpiobroker/applications/
+#  - ../../scorpiobroker/applications/
 #  - ../../openshift-ai/applications/
