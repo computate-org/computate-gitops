@@ -12,7 +12,7 @@ spec:
   source:
     repoURL: https://helm.releases.hashicorp.com
     chart: vault
-    targetRevision: 0.31.0
+    targetRevision: 0.32.0
     helm:
       releaseName: vault
       parameters:
@@ -27,6 +27,12 @@ spec:
           value: "vault.apps-crc.testing"
         - name: server.route.tls.termination
           value: "edge"
+        #- name: ha.enabled
+        #  value: "true"
+        #- name: ha.replicas
+        #  value: "3"
+        #- name: ha.raft.enabled
+        #  value: "true"
         - name: server.statefulSet.securityContext.pod.runAsNonRoot
           value: "true"
         - name: server.statefulSet.securityContext.pod.runAsGroup
@@ -39,17 +45,17 @@ spec:
         - name: injector.image.repository
           value: "registry.connect.redhat.com/hashicorp/vault-k8s"
         - name: injector.image.tag
-          value: "1.1.0-ubi"
+          value: "1.7.4-ubi"
 
         - name: injector.agentImage.repository
           value: "registry.connect.redhat.com/hashicorp/vault"
         - name: injector.agentImage.tag
-          value: "1.12.1-ubi"
+          value: "1.21.4-ubi"
 
         - name: server.image.repository
           value: "registry.connect.redhat.com/hashicorp/vault"
         - name: server.image.tag
-          value: "1.12.1-ubi"
+          value: "1.21.4-ubi"
   ignoreDifferences:
     - group: admissionregistration.k8s.io
       kind: MutatingWebhookConfiguration
