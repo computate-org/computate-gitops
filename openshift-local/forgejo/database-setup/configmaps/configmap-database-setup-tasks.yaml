@@ -16,7 +16,7 @@ data:
     - name: Set postgres pod name
       set_fact:
         POSTGRES_POD_NAME: "{{ postgres_pod_info.resources[0].metadata.name }}"
-        POSTGRES_FORGEJO_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='postgres-pguser-forgejo', namespace='forgejo')[0].data['password'] | b64decode }}"
+        POSTGRES_FORGEJO_PASSWORD: "{{ query('kubernetes.core.k8s', kind='Secret', resource_name='postgres-pguser-forgejo', namespace='forgejo')[0].data['PASSWD'] | b64decode }}"
     - name: "Create database user forgejo"
       kubernetes.core.k8s_exec:
         namespace: postgres
