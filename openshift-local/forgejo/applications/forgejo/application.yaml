@@ -26,10 +26,8 @@ spec:
           value: 'true'
         - name: persistence.size
           value: 10Gi
-        - name: gitea.config.database.host
-          value: postgres.postgres.svc
         - name: gitea.additionalConfigSources[0].secret.secretName
-          value: postgres-pguser-forgejo
+          value: database
         - name: gitea.queue.TYPE
           value: redis
         - name: gitea.queue.CONN_STR
