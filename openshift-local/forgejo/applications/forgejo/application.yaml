@@ -1,0 +1,53 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: forgejo
+  namespace: openshift-gitops
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: default
+  source:
+    repoURL: oci://code.forgejo.org/forgejo-helm/forgejo
+    chart: forgejo
+    targetRevision: 17.1.1
+    helm:
+      parameters:
+        - name: global.compatibility.openshift.adaptSecurityContext
+          value: force
+        - name: route.enabled
+          value: 'true'
+        - name: route.host
+          value: git.apps-crc.testing
+        - name: gitea.config.APP_NAME
+          value: 'Git for computate.org projects'
+        - name: persistence.enabled
+          value: 'true'
+        - name: persistence.size
+          value: 10Gi
+        - name: gitea.config.database.host
+          value: postgres.postgres.svc
+        - name: gitea.additionalConfigSources.secret.secretName
+          value: postgres-pguser-forgejo
+        - name: gitea.queue.TYPE
+          value: redis
+        - name: gitea.queue.CONN_STR
+          value: redis://valkey.valkey.svc:6379/0?
+        - name: gitea.cache.ADAPTER
+          value: redis
+        - name: gitea.cache.HOST
+          value: redis://valkey.valkey.svc:6379/1
+        - name: gitea.session.PROVIDER
+          value: redis
+        - name: gitea.session.PROVIDER_CONFIG
+          value: redis://valkey.valkey.svc:6379/2
+  destination:
+    namespace: keycloak
+    server: 'https://kubernetes.default.svc'
+  syncPolicy:
+    automated:
+      # resources that no longer exist get deleted on sync
+      prune: true
+      # sync will be attempted again on failure after self heal timeout (5 seconds by default)
+      selfHeal: true
