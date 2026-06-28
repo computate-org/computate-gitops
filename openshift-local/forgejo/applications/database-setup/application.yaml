@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: keycloak-database-setup
+  name: forgejo-database-setup
   namespace: openshift-gitops
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
@@ -12,9 +12,9 @@ spec:
   source:
     repoURL: https://github.com/computate-org/computate-gitops.git
     targetRevision: HEAD
-    path: openshift-local/keycloak/database-setup/
+    path: openshift-local/forgejo/database-setup/
   destination:
-    namespace: keycloak
+    namespace: forgejo
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
