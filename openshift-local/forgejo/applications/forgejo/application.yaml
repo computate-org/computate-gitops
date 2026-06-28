@@ -28,7 +28,7 @@ spec:
           value: 10Gi
         - name: gitea.config.database.host
           value: postgres.postgres.svc
-        - name: gitea.additionalConfigSources.secret.secretName
+        - name: gitea.additionalConfigSources[0].secret.secretName
           value: postgres-pguser-forgejo
         - name: gitea.queue.TYPE
           value: redis
@@ -42,8 +42,10 @@ spec:
           value: redis
         - name: gitea.session.PROVIDER_CONFIG
           value: redis://valkey.valkey.svc:6379/2
+        - name: gitea.admin.existingSecret
+          value: forgejo-admin
   destination:
-    namespace: keycloak
+    namespace: forgejo
     server: 'https://kubernetes.default.svc'
   syncPolicy:
     automated:
